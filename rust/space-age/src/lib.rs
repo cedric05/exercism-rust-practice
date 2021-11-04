@@ -9,7 +9,6 @@ impl Duration {
         self.0
     }
 }
-
 impl From<u64> for Duration {
     fn from(s: u64) -> Self {
         Duration(s)
@@ -25,57 +24,22 @@ pub trait Planet {
     }
 }
 
-pub struct Mercury;
-pub struct Venus;
-pub struct Earth;
-pub struct Mars;
-pub struct Jupiter;
-pub struct Saturn;
-pub struct Uranus;
-pub struct Neptune;
-
-fn fun_name(d: &Duration, factor: f64) -> f64 {
-    (d.time() as f64 / 31556952.0) / factor
+macro_rules! planet_impl {
+    ($t:ident, $n:expr) => {
+        pub struct $t {}
+        impl Planet for $t {
+            fn years_during(d: &Duration) -> f64 {
+                (d.time() as f64 / 31556952.0) / $n
+            }
+        }
+    };
 }
 
-impl Planet for Mercury {
-    fn years_during(d: &Duration) -> f64 {
-        fun_name(d, 0.2408467)
-    }
-}
-impl Planet for Venus {
-    fn years_during(d: &Duration) -> f64 {
-        fun_name(d, 0.61519726)
-    }
-}
-impl Planet for Earth {
-    fn years_during(d: &Duration) -> f64 {
-        fun_name(d, 1.0)
-    }
-}
-impl Planet for Mars {
-    fn years_during(d: &Duration) -> f64 {
-        fun_name(d, 1.8808158)
-    }
-}
-
-impl Planet for Jupiter {
-    fn years_during(d: &Duration) -> f64 {
-        fun_name(d, 11.862615)
-    }
-}
-impl Planet for Saturn {
-    fn years_during(d: &Duration) -> f64 {
-        fun_name(d, 29.447498)
-    }
-}
-impl Planet for Uranus {
-    fn years_during(d: &Duration) -> f64 {
-        fun_name(d, 84.016846)
-    }
-}
-impl Planet for Neptune {
-    fn years_during(d: &Duration) -> f64 {
-        fun_name(d, 164.79132)
-    }
-}
+planet_impl![Mercury, 0.2408467];
+planet_impl![Venus, 0.61519726];
+planet_impl![Earth, 1.0];
+planet_impl![Mars, 1.8808158];
+planet_impl![Jupiter, 11.862615];
+planet_impl![Saturn, 29.447498];
+planet_impl![Uranus, 84.016846];
+planet_impl![Neptune, 164.79132];
