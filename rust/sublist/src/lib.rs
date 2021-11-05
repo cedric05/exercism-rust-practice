@@ -1,4 +1,3 @@
-use std::cmp;
 #[derive(Debug, PartialEq)]
 pub enum Comparison {
     Equal,
@@ -6,34 +5,33 @@ pub enum Comparison {
     Superlist,
     Unequal,
 }
-enum Includes {
-    Yes,
-    No,
-}
-pub fn sublist<T: PartialEq>(first_list: &[T], seconnd_list: &[T]) -> Comparison {
+
+pub fn sublist<T: PartialEq>(a: &[T], b: &[T]) -> Comparison {
     use Comparison::*;
-    use Includes::*;
-    match first_list.len().cmp(&seconnd_list.len()) {
-        cmp::Ordering::Less => match first_contains_second(first_list, seconnd_list) {
-            Yes => Sublist,
-            No => Unequal,
-        },
-        cmp::Ordering::Equal => match first_contains_second(first_list, seconnd_list) {
-            Yes => Equal,
-            No => Unequal,
-        },
-        cmp::Ordering::Greater => match first_contains_second(seconnd_list, first_list) {
-            Yes => Superlist,
-            No => Equal,
-        },
-    }
-}
-fn first_contains_second<T: std::cmp::PartialEq>(l1: &[T], l2: &[T]) -> Includes {
-    if l1.is_empty() {
-        return Includes::Yes;
-    }
-    match l2.windows(l1.len()).any(|arr| arr == l1) {
-        true => Includes::Yes,
-        false => Includes::No,
+    match (a.len(), b.len()) {
+        (0, 0) => Comparison::Equal,
+        (0, _) => Comparison::Sublist,
+        (_, 0) => Comparison::Superlist,
+        (m, n) if m > n => {
+            if a.windows(b.len()).any(|arr| arr == b) {
+                Comparison::Superlist
+            } else {
+                Comparison::Unequal
+            }
+        }
+        (m, n) if m < n => {
+            if b.windows(a.len()).any(|arr| arr == a) {
+                Comparison::Sublist
+            } else {
+                Comparison::Unequal
+            }
+        }
+        (_, _) => {
+            if a == b {
+                Equal
+            } else {
+                Unequal
+            }
+        }
     }
 }
