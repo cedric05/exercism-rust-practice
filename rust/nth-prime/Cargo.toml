@@ -1,0 +1,10 @@
+[package]
+edition = "2021"
+name = "nth_prime"
+version = "2.1.0"
+
+[dependencies]
+
+[[bin]]
+name = "test"
+path = "src/lib.rs"
