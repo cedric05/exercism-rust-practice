@@ -8,14 +8,9 @@ pub fn verse(n: u32) -> String {
 }
 
 pub fn sing(start: u32, end: u32) -> String {
-    let a = (end..=(start))
+    (end..=start)
         .rev() //
-        .into_iter() //
-        .map(verse) //
-        .reduce(|a, b| {
-            let mut a = a;
-            a.push('\n');
-            a + &b
-        });
-    a.unwrap()
+        .map(verse)
+        .collect::<Vec<_>>()
+        .join("\n")
 }
