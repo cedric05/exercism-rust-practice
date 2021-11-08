@@ -45,8 +45,7 @@ pub fn nth(n: u32) -> u32 {
     let mut primes: Vec<u32> = vec![2, 3, 5, 7, 11];
     PossiblePrimes::new()
         .filter(|x| -> bool { is_prime(*x, &mut primes) })
-        .take((n + 1) as usize)
-        .last()
+        .nth(n.try_into().unwrap())
         .unwrap()
 }
 
