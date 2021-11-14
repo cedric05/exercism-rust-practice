@@ -11,6 +11,8 @@
 			
 		}
 	},
+	"postCreateCommand": "",
+	"postStartCommand": "exercism configure --token=<YOUR TOKEN HERE> && exercism configure --workspace=/workspaces/exercism-rust-practice",
 	"runArgs": [
 		"--init",
 		"--cap-add=SYS_PTRACE",
